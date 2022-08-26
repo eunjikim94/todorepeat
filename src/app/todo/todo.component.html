@@ -1,0 +1,100 @@
+<section class="todoapp">
+    <header class="header">
+      <!-- <h1>todos</h1> -->
+      <!-- <button class="checkedColor" mat-button [disableRipple]="true" [ngStyle]="{'visibility': todos.length ? 'visible':'hidden'}" (click)="toggleAllSelection()"  [ngClass]="{'gray' : toggle, 'red': !toggle}"><mat-icon>check</mat-icon></button> -->
+      <!-- <mat-checkbox  [ngStyle]="{'visibility': todos.length ? 'visible':'hidden'}" checked="false"></mat-checkbox> -->
+  
+      <!-- 입력부분 -->
+      <div class="inputPos">
+        <input
+          id="toggle-all"
+          class="toggle-all"
+          type="checkbox"
+          #CheckAll
+          (change)="toggleCheckAll(CheckAll.checked)"
+          [checked]="allCompleted"
+        />
+        <label for="toggle-all"></label> 
+  
+        <input
+          #todoAdd
+          class="newTodo"
+          autofocus
+          (keyup.enter)="add(todoAdd.value)"
+          placeholder="What needs to be done?"
+            [(ngModel)]="reset"
+        />
+        <!-- </mat-form-field>   -->
+      </div>
+    </header>
+
+    <section class="main">
+      <ul class="todo-list">
+        <li *ngFor="let todo of todos">
+
+          <!-- 필터링할때 -->
+             <!-- <li *ngFor="let todo of filterTodos"> -->
+
+          <div class="view">
+            <div class="checkCustom">
+              <input
+            (change)="toggle(todo)"
+            [checked]="todo.completed"
+              class="toggles"
+              type="checkbox"
+             
+            />
+            <label></label>
+            </div>
+          
+           
+
+            <label *ngIf="currentTodo?.id != todo.id" (dblclick)="edit(todo)">
+              {{
+              todo.title
+            }}</label>
+
+            <!-- ng 모델 커렌트값 바로바로 -->
+            <!-- <label (dblclick)="edit(todo)">
+              {{
+              todo.title
+            }}</label> -->
+
+            
+            <button  class="destroy" (click)="delete(todo)">delete</button>
+          </div>
+          <input
+            class="edit"
+            autofocus
+            *ngIf="currentTodo === todo"
+            [(ngModel)]="currentTodo.title"
+            (keyup.enter)="update(todo)"
+            (keyup.esc)="cancelEdit()"
+          />
+        </li>
+      </ul>
+    </section>
+
+    <footer>
+      <span> <strong>{{remaining}}</strong>
+      item{{remaining !== 1?"S":""}}LEFT</span>
+      <ul class="filters">
+        <li>
+          <a [routerLink]="['/all']" [class.selected]="filter == 'SHOW_ALL'">All</a>
+        </li>
+        <li>
+          <a [routerLink]="['/active']" [class.seleted]="filter == 'SHOW_ACTIVE'">Active</a>
+        </li>
+        <li>
+          <a [routerLink]="['/completed']" [class.selected]="filter == 'SHOW_COMPLETED'">Completed</a>
+        </li>
+      </ul>
+      <!-- 컴플리트값이 있으면 보여주고 없으면  -->
+      <button *ngIf="completed" (click)="clearCompleted()">
+        clearCompleted
+      </button>
+    </footer>
+  
+  
+  </section>
+  
